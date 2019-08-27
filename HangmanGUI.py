@@ -9,6 +9,7 @@ class Game:
 	def __init__(self, root):
 		root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
 		self.word = StringVar()
+		self.letterGuesses = StringVar()
 		self.guess = StringVar()
 		self.guess.trace('w',self.limitEntry)
 		self.lives = IntVar()
@@ -16,49 +17,63 @@ class Game:
 		
 		frame = Frame(root)
 		frame.pack()
-		Label(frame, textvariable=self.word).grid(row=0, columnspan=2)
+		Label(frame, textvariable=self.letterGuesses, font='Arial 24').grid(row=0, columnspan=2)
 		Label(frame, text='Guess a letter:').grid(row=1, column=0)
-		Entry(frame, textvariable=self.guess, width=1).grid(row=1, column=1)
+		Entry(frame, textvariable=self.guess, width=1, font='Arial 16 bold').grid(row=1, column=1)
 		Label(frame, text='Lives left:').grid(row=2,column = 0)
 		Label(frame, textvariable=self.lives).grid(row=2, column=1)
 		Label(frame, textvariable=self.result).grid(row=3, columnspan=2)
+		
+		self.word.set(self.wordPick())
+		self.printWord()
+		#self.game(self.wordPick())
 	
 	def limitEntry(self, *args):
 		value = self.guess.get()
 		if len(value)>1:
 			self.guess.set(value[-1:])
+		
+	def getWords(self):
+		u = 'https://www.ef.com/wwen/english-resources/english-vocabulary/top-3000-words/'
+		f = urllib.request.urlopen(u)
+		contents = str(f.read()).split('\\n') 
+		f.close()
 
+		# 286 - 3283 <------ (lines that contain the words we need)
+		wordList = []
+		for w in range(286,3284):
+			if len(contents[w]) > 15:
+				wordList.append(contents[w][2:-6])
+		return wordList
+		
+	def wordPick(self):
+		self.words = self.getWords()
+		return random.choice(self.words)
+				
+	def printWord(self):
+		wordDisplay = ''
+		letterGuesses = self.letterGuesses.get()
+		word = self.word.get()
+		for letter in word:
+			if letterGuesses.find(letter) > -1:
+				wordDisplay = wordDisplay + letter
+			else:
+				wordDisplay = wordDisplay + '-'
+		self.letterGuesses.set(wordDisplay)
+    				
+	def game(self, word):
+		while True:
+			guess = get_guess(word)
+			if process_guess(guess, word):
+				print(word)
+				print('You Win!!!')
+				break
+			if lives == 0:
+				print('You got hung!...')
+				print('the word was '+word)
+				break
+				
 
-
-
-def getWords():
-    u = 'https://www.ef.com/wwen/english-resources/english-vocabulary/top-3000-words/'
-    f = urllib.request.urlopen(u)
-    contents = str(f.read()).split('\\n') 
-    f.close()
-
-    # 286 - 3283 <------ (lines that contain the words we need)
-    wordList = []
-    for w in range(286,3284):
-        if len(contents[w]) > 15:
-            wordList.append(contents[w][2:-6])
-    return wordList
-    
-def game(word):
-    while True:
-        guess = get_guess(word)
-        if process_guess(guess, word):
-            print(word)
-            print('You Win!!!')
-            break
-        if lives == 0:
-            print('You got hung!...')
-            print('the word was '+word)
-            break
-            
-def wordPick():
-    words = getWords()
-    return random.choice(words)
 
 def get_guess(word):
     printWord(word)
@@ -71,14 +86,7 @@ def get_guess(word):
             break
     return guess
     
-def printWord(word):
-    wordDisplay = ''
-    for letter in word:
-        if letterGuesses.find(letter) > -1:
-            wordDisplay = wordDisplay + letter
-        else:
-            wordDisplay = wordDisplay + '-'
-    print (wordDisplay)
+
     
 def process_guess(guess, word):
     '''
