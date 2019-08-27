@@ -10,18 +10,23 @@ class Game:
 		root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
 		self.word = StringVar()
 		self.guess = StringVar()
+		self.guess.trace('w',self.limitEntry)
 		self.lives = IntVar()
 		self.result = StringVar()
 		
 		frame = Frame(root)
 		frame.pack()
-		#Label(frame, text='This is a test').grid(row=0, column=0)
 		Label(frame, textvariable=self.word).grid(row=0, columnspan=2)
 		Label(frame, text='Guess a letter:').grid(row=1, column=0)
 		Entry(frame, textvariable=self.guess, width=1).grid(row=1, column=1)
 		Label(frame, text='Lives left:').grid(row=2,column = 0)
 		Label(frame, textvariable=self.lives).grid(row=2, column=1)
 		Label(frame, textvariable=self.result).grid(row=3, columnspan=2)
+	
+	def limitEntry(self, *args):
+		value = self.guess.get()
+		if len(value)>1:
+			self.guess.set(value[-1:])
 
 
 
