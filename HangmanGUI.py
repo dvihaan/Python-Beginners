@@ -1,4 +1,3 @@
-import numpy
 import random
 import urllib.request
 from tkinter import *
@@ -29,10 +28,12 @@ class Game:
 		Label(frame, textvariable=self.result).grid(row=4, columnspan=2)
 		self.rButton = Button(frame, text='Play Again', command = self.restart)
 		self.rButton.grid(row=5, columnspan=2)
+		
 		self.restart()
 		
 		
 	def restart(self):
+		self.letterGuesses.set('')
 		self.word = self.wordPick()
 		self.printWord()
 		self.lives.set(14)
@@ -40,27 +41,21 @@ class Game:
 		self.guessButton.config(state='normal')
 		self.guess.set('')
 		self.result.set('')
-		#self.letterGuesses.set('')
 		print(self.word)
-	
-	
-	
+		
 	def limitEntry(self, *args):
 		value = self.guess.get()
 		if len(value)>1:
-			self.guess.set(value[-1:])
-			
+			self.guess.set(value[-1:])			
 		
 	def getWords(self):
 		u = 'https://www.ef.com/wwen/english-resources/english-vocabulary/top-3000-words/'
 		f = urllib.request.urlopen(u)
 		contents = str(f.read()).split('\\n') 
 		f.close()
-
-		# 286 - 3283 <------ (lines that contain the words we need)
 		wordList = []
 		for w in range(286,3284):
-			if len(contents[w]) > 15:
+			if len(contents[w]) > 14:
 				wordList.append(contents[w][2:-6])
 		return wordList
 		
@@ -79,17 +74,7 @@ class Game:
 		self.letterGuesses.set(wordDisplay)
     				
 	def process_guess(self):
-		'''
-		if your guess is one of the letters in the word, then change the
-		blank space mapping to that letter in the dealer's word to the
-		letter you guessed.
-		
-		if the letter you guessed is not one of the letters in the word,
-		then one of your lives is removed and your remaining life count (global)
-		is decreased by 1.
-		'''
-		guess = self.guess.get()		
-		
+		guess = self.guess.get()				
 		if self.word.find(guess) < 0:
 			self.lives.set(self.lives.get() -1)
 		else:
@@ -106,7 +91,6 @@ class Game:
 			self.result.set('You got hung!')
 			self.entry.config(state='disabled')
 			self.guessButton.config(state='disabled')
-
 
 root = Tk()
 root.wm_title('Hangman')
