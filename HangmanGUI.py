@@ -27,10 +27,20 @@ class Game:
 		Label(frame, text='Lives left:').grid(row=3,column = 0)
 		Label(frame, textvariable=self.lives).grid(row=3, column=1)
 		Label(frame, textvariable=self.result).grid(row=4, columnspan=2)
+		self.rButton = Button(frame, text='Play Again', command = self.restart)
+		self.rButton.grid(row=5, columnspan=2)
+		self.restart()
 		
+		
+	def restart(self):
 		self.word = self.wordPick()
 		self.printWord()
 		self.lives.set(14)
+		self.entry.config(state='normal')
+		self.guessButton.config(state='normal')
+		self.guess.set('')
+		self.result.set('')
+		#self.letterGuesses.set('')
 		print(self.word)
 	
 	
