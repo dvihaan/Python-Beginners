@@ -20,8 +20,10 @@ class Game:
 		frame.pack()
 		Label(frame, textvariable=self.letterGuesses, font='Arial 24').grid(row=0, columnspan=2)
 		Label(frame, text='Guess a letter:').grid(row=1, column=0)
-		Entry(frame, textvariable=self.guess, width=1, font='Arial 16 bold').grid(row=1, column=1)
-		Button(frame, text='Guess', command = self.process_guess).grid(row=2, columnspan=2)
+		self.entry = Entry(frame, textvariable=self.guess, width=1, font='Arial 16 bold')
+		self.entry.grid(row=1, column=1)
+		self.guessButton = Button(frame, text='Guess', command = self.process_guess)
+		self.guessButton.grid(row=2, columnspan=2)
 		Label(frame, text='Lives left:').grid(row=3,column = 0)
 		Label(frame, textvariable=self.lives).grid(row=3, column=1)
 		Label(frame, textvariable=self.result).grid(row=4, columnspan=2)
@@ -83,7 +85,18 @@ class Game:
 		else:
 			self.letterGuesses.set(self.letterGuesses.get()+guess)
 		self.printWord()
+		self.gameEnd()
 		
+	def gameEnd(self):
+		if self.letterGuesses.get() == self.word:
+			self.result.set('You Win!')
+			self.entry.config(state='disabled')
+			self.guessButton.config(state='disabled')
+		if self.lives.get() == 0:
+			self.result.set('You got hung!')
+			self.entry.config(state='disabled')
+			self.guessButton.config(state='disabled')
+
 
 root = Tk()
 root.wm_title('Hangman')
