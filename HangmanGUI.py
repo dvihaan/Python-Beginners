@@ -7,6 +7,7 @@ class Game:
 	
 	def __init__(self, root):
 		root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
+		self.wordList = self.getWords()
 		self.word = ''
 		
 		self.letterGuesses = StringVar()
@@ -34,7 +35,7 @@ class Game:
 		
 	def restart(self):
 		self.letterGuesses.set('')
-		self.word = self.wordPick()
+		self.word = random.choice(self.wordList)
 		self.printWord()
 		self.lives.set(14)
 		self.entry.config(state='normal')
@@ -58,10 +59,6 @@ class Game:
 			if len(contents[w]) > 14:
 				wordList.append(contents[w][2:-6])
 		return wordList
-		
-	def wordPick(self):
-		self.wordList = self.getWords()
-		return random.choice(self.wordList)
 				
 	def printWord(self):
 		wordDisplay = ''
@@ -88,7 +85,7 @@ class Game:
 			self.entry.config(state='disabled')
 			self.guessButton.config(state='disabled')
 		if self.lives.get() == 0:
-			self.result.set('You got hung!')
+			self.result.set('You got hung!\n'+self.word)
 			self.entry.config(state='disabled')
 			self.guessButton.config(state='disabled')
 
