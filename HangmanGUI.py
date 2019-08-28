@@ -21,17 +21,20 @@ class Game:
 		Label(frame, textvariable=self.letterGuesses, font='Arial 24').grid(row=0, columnspan=2)
 		Label(frame, text='Guess a letter:').grid(row=1, column=0)
 		Entry(frame, textvariable=self.guess, width=1, font='Arial 16 bold').grid(row=1, column=1)
-		Label(frame, text='Lives left:').grid(row=2,column = 0)
-		Label(frame, textvariable=self.lives).grid(row=2, column=1)
-		Label(frame, textvariable=self.result).grid(row=3, columnspan=2)
+		Button(frame, text='Guess', command = self.process_guess).grid(row=2, columnspan=2)
+		Label(frame, text='Lives left:').grid(row=3,column = 0)
+		Label(frame, textvariable=self.lives).grid(row=3, column=1)
+		Label(frame, textvariable=self.result).grid(row=4, columnspan=2)
 		
 		self.word = self.wordPick()
 		self.printWord()
-		#self.game(self.wordPick())
+		self.lives.set(14)
+		print(self.word)
+	
+	
 	
 	def limitEntry(self, *args):
 		value = self.guess.get()
-		print(value)
 		if len(value)>1:
 			self.guess.set(value[-1:])
 			
@@ -79,8 +82,9 @@ class Game:
 			self.lives.set(self.lives.get() -1)
 		else:
 			self.letterGuesses.set(self.letterGuesses.get()+guess)
+		self.printWord()
 		
-		
+
 root = Tk()
 root.wm_title('Hangman')
 game = Game(root)
