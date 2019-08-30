@@ -4,11 +4,12 @@ import random
 import urllib.request
 from tkinter import *
 from tkinter import ttk
+from Hangman_Canvas import Hangman
 
 class Game:
 	
 	def __init__(self, root):
-		root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
+		#root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
 		self.wordList = self.getWords()
 		self.word = ''
 		
@@ -18,18 +19,22 @@ class Game:
 		self.lives = IntVar()
 		self.result = StringVar()
 		
-		frame = Frame(root)
-		frame.pack()
-		Label(frame, textvariable=self.letterGuesses, font='Arial 24').grid(row=0, columnspan=2)
-		Label(frame, text='Guess a letter:').grid(row=1, column=0)
-		self.entry = Entry(frame, textvariable=self.guess, width=1, font='Arial 16 bold')
+		gameframe = Frame(root)
+		gameframe.grid(row=0,column=0)
+		self.canvasFrame = Frame(root)
+		self.canvasFrame.grid(row=0,column=1)
+		self.hangmanCanvas = Hangman(self.canvasFrame)
+		canvas = Canvas(gameframe, width=340,height=440)
+		Label(gameframe, textvariable=self.letterGuesses, font='Arial 24').grid(row=0, columnspan=2)
+		Label(gameframe, text='Guess a letter:').grid(row=1, column=0)
+		self.entry = Entry(gameframe, textvariable=self.guess, width=1, font='Arial 16 bold')
 		self.entry.grid(row=1, column=1)
-		self.guessButton = Button(frame, text='Guess', command = self.process_guess)
+		self.guessButton = Button(gameframe, text='Guess', command = self.process_guess)
 		self.guessButton.grid(row=2, columnspan=2)
-		Label(frame, text='Lives left:').grid(row=3,column = 0)
-		Label(frame, textvariable=self.lives).grid(row=3, column=1)
-		Label(frame, textvariable=self.result).grid(row=4, columnspan=2)
-		self.rButton = Button(frame, text='Play Again', command = self.restart)
+		Label(gameframe, text='Lives left:').grid(row=3,column = 0)
+		Label(gameframe, textvariable=self.lives).grid(row=3, column=1)
+		Label(gameframe, textvariable=self.result).grid(row=4, columnspan=2)
+		self.rButton = Button(gameframe, text='Play Again', command = self.restart)
 		self.rButton.grid(row=5, columnspan=2)
 		
 		self.restart()
@@ -44,7 +49,8 @@ class Game:
 		self.guessButton.config(state='normal')
 		self.guess.set('')
 		self.result.set('')
-		print(self.word)
+		self.hangmanCanvas.canvas.delete(ALL)
+		#print(self.word)
 		
 	def limitEntry(self, *args):
 		value = self.guess.get()
@@ -76,6 +82,7 @@ class Game:
 		guess = self.guess.get()				
 		if self.word.find(guess) < 0:
 			self.lives.set(self.lives.get() -1)
+			self.hangmanCanvas.drawFunctions[13-self.lives.get()]()
 		else:
 			self.letterGuesses.set(self.letterGuesses.get()+guess)
 		self.printWord()

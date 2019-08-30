@@ -3,7 +3,7 @@ from tkinter import *
 class Hangman:
 
 	def __init__(self, master):
-		self.canvas = Canvas(master, width=340, height = 440)
+		self.canvas = Canvas(master, width=255, height = 330)
 		self.canvas.pack()
 		h = int(self.canvas['height'])
 		w = int(self.canvas['width'])
@@ -29,13 +29,14 @@ class Hangman:
 
 		]
 		
-		self.drawHangman()
+		#self.drawHangman()
 		
 		
 	def drawHangman(self):	
 		for f in self.drawFunctions:
 			f()
-
+'''
 root = Tk()
 test = Hangman(root)
 root.mainloop()
+'''
