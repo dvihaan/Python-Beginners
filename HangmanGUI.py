@@ -1,15 +1,22 @@
 #!/usr/bin/python3
 
+# Import all the required libraries
+
 import random
 import urllib.request
 from tkinter import *
 from tkinter import ttk
 from Hangman_Canvas import Hangman
 
+# Create the Game class, which contains all the code for the game to run
+
 class Game:
 	
+	# Code for the game to run on initialization
 	def __init__(self, root):
-		#root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))
+		#root.eval('tk::PlaceWindow %s center' % root.winfo_pathname(root.winfo_id()))     Needed to centre the Tk window when on a large screen
+		
+		# Set game variables
 		self.wordList = self.getWords()
 		self.word = ''
 		
@@ -19,12 +26,15 @@ class Game:
 		self.lives = IntVar()
 		self.result = StringVar()
 		
+		# Create frame for game
 		gameframe = Frame(root)
 		gameframe.grid(row=0,column=0)
+		# Create canvas frame for hangman drawing
 		self.canvasFrame = Frame(root)
 		self.canvasFrame.grid(row=0,column=1)
 		self.hangmanCanvas = Hangman(self.canvasFrame)
 		canvas = Canvas(gameframe, width=340,height=440)
+		# Show all guesses
 		Label(gameframe, textvariable=self.letterGuesses, font='Arial 24').grid(row=0, columnspan=2)
 		Label(gameframe, text='Guess a letter:').grid(row=1, column=0)
 		self.entry = Entry(gameframe, textvariable=self.guess, width=1, font='Arial 16 bold')
@@ -37,6 +47,7 @@ class Game:
 		self.rButton = Button(gameframe, text='Play Again', command = self.restart)
 		self.rButton.grid(row=5, columnspan=2)
 		
+		# restart the game when run
 		self.restart()
 		
 		
