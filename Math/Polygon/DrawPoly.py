@@ -56,9 +56,9 @@ def run_show():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print("Button = {}".format(event.button))
                 if event.button == 4:
-                    angle = angle + 5
+                    angle = angle + 50
                 if event.button == 5:
-                    angle = angle - 5
+                    angle = angle - 50
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -68,7 +68,7 @@ def run_show():
         renderPolygon()
 
         pygame.display.update()
-        clock.tick(10)
+        clock.tick(250)
         mouseEvent = False
 
 run_show()
