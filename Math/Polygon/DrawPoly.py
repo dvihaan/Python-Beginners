@@ -17,7 +17,7 @@ size = width, height = 1280, 1024
 sides = 3
 sideLength = 10
 angle = 0
-mouseEvent = False
+
 pygame.init()
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
@@ -31,34 +31,7 @@ background.fill(pygame.Color("white"))
 # The function to actually render the polygon
 def renderPolygon():
     # Creating the global variables for the amount of sides, side length, the rotation angle, and the mouse button being pressed 
-    global sides, sideLength, mouseEvent, angle
-    
-    if mouseEvent == False:
-        # decreasing the number of sides
-        if pygame.mouse.get_pressed() == (1,0,0):
-            if sides > 3:
-                sides = sides - 1
-                print("Number of Sides = {}, Side Length = {}".format(sides, sideLength))
-            mouseEvent = True
-        # increasing the amount of sides
-        if pygame.mouse.get_pressed() == (0,0,1):
-            if sides < 1000:
-                sides = sides + 1    
-                print("Number of Sides = {}, Side Length = {}".format(sides, sideLength))
-            mouseEvent = True  
-        # Decreasing the side length
-        if pygame.mouse.get_pressed() == (1,1,0):
-            if sideLength > 10:
-                sideLength = sideLength - 10
-                print("Number of Sides = {}, Side Length = {}".format(sides, sideLength))
-            mouseEvent = True
-        # Increasing the side length
-        if pygame.mouse.get_pressed() == (0,1,1):
-            if sideLength < 100:
-                sideLength = sideLength + 10    
-                print("Number of Sides = {}, Side Length = {}".format(sides, sideLength))
-            mouseEvent = True                   
-
+    global sides, sideLength, angle
     # Drawing the polygon
     centre = (pygame.mouse.get_pos())
     points = Polygon.GetPoints(sides,sideLength, centre[0], centre[1], angle)
@@ -70,11 +43,26 @@ def renderPolygon():
 
 # Running the function written before and taking user input
 def run_show():
-    global mouseEvent, angle
+    global angle, sides, sideLength
     while True:        
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print("Button = {}".format(event.button))
+                print("Pressed = {}".format(pygame.mouse.get_pressed()))
+                if event.button == 1:
+                    if pygame.mouse.get_pressed() == (1,0,0):
+                        if sides > 3:
+                            sides = sides - 1
+                    if pygame.mouse.get_pressed() == (1,1,0):
+                        if sideLength > 5:
+                            sideLength = sideLength - 5                            
+                if event.button == 3:
+                    if pygame.mouse.get_pressed() == (0,0,1):
+                        if sides < 1000:
+                            sides = sides + 1  
+                    if pygame.mouse.get_pressed() == (0,1,1):
+                        if sideLength < 500:
+                            sideLength = sideLength + 5 
                 if event.button == 4:
                     angle = angle + 50
                 if event.button == 5:
@@ -92,7 +80,6 @@ def run_show():
         pygame.display.update()
         # Edit the FPS by changing the input for clock.tick
         clock.tick(250)
-        mouseEvent = False
 
 # Finally running the program
 run_show()
