@@ -66,7 +66,7 @@ def run_show():
                             level += 1  
                     
                     if pygame.mouse.get_pressed() == (0,1,1):
-                        if sideLength < 1000:
+                        if sideLength < 5000:
                             sideLength = sideLength + 50 
                 
                 if event.button == 4:
