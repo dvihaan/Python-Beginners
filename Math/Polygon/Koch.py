@@ -5,22 +5,22 @@ def equalVertex(x1=-10,y1=0,x2=10,y2=0):
     #print("x3={}, y3={}".format(x3, y3))
     l = math.sqrt((x1-x2)**2 + (y1-y2)**2)
     #print("l={}".format(l))
-    m1 = (y2-y1)/(x2-x1)
+    m = (y2-y1)/(x2-x1)
     #print("m1={}".format(m1))
-    c = m1*l*math.sin(math.radians(60))/math.sqrt(m1**2 + 1)
+    c = m*l*math.sin(math.radians(60))/math.sqrt(m**2 + 1)
     #print("c={}".format(c))
     if x2 == x1:
-         x4 = x3+l*math.sin(math.radians(60))
+        x4 = x3 - l*math.sin(math.radians(60))
     else:
         x4 = c+x3
 
-    if y2 == y1:
-        y4 = y3-l*math.sin(math.radians(60))
+    if m == 0:
+        y4 = y3 - l*math.sin(math.radians(60))
     else:
         if x2 == x1:
             y4 = y3
-        else: 
-            y4 = y3 -c/m1
+        else:
+            y4 = y3 - c/m
 
     points = [(x1,y1),(x4,y4),(x2,y2),(x1,y1)] 
 
@@ -44,7 +44,7 @@ def Snowflake(points, level = 0):
     return points
 
 def main():
-    point = equalVertex(1149.67, 17.54, 1153.21, 23.2)
+    point = equalVertex(33.33,0, -33.33, 0)
 
     print(point)
 

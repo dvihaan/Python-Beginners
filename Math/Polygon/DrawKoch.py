@@ -32,7 +32,13 @@ def drawEquilateral():
 def drawKoch():
     global sideLength, angle, level
     centre = (pygame.mouse.get_pos())
-    points = Koch.equalVertex(x1 = centre[0]-sideLength/2,y1 = centre[1],x2 = centre[0]+sideLength/2,y2 = centre[1])
+    points = Koch.equalVertex(x1 = centre[0]-sideLength/2,y1 = centre[1]+sideLength/3,x2 = centre[0]+sideLength/2,y2 = centre[1]+sideLength/3)
+    '''
+    height = points[1][1]
+    for i in range(len(points)):
+        points[i] = (points[i][0], points[i][1] + height/2)
+    print(points)
+    '''
     points = Koch.Snowflake(points,level)
     for i in range(len(points)):        
         x = points[i][0]-centre[0]
@@ -46,9 +52,7 @@ def run_show():
     while True:        
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print("Button = {}".format(event.button))
-                print("Pressed = {}".format(pygame.mouse.get_pressed()))
-                
+
                 if event.button == 1:
                     
                     if pygame.mouse.get_pressed() == (1,0,0):
@@ -61,7 +65,7 @@ def run_show():
                 if event.button == 3:
                     
                     if pygame.mouse.get_pressed() == (0,0,1):
-                        if level < 6:
+                        if level < 7:
                             level += 1  
                     
                     if pygame.mouse.get_pressed() == (0,1,1):
@@ -69,9 +73,9 @@ def run_show():
                             sideLength = sideLength + 5 
                 
                 if event.button == 4:
-                    angle = angle + 50
+                    angle = angle + 10
                 if event.button == 5:
-                    angle = angle - 50
+                    angle = angle - 10
                 
 
             if event.type == pygame.QUIT:
