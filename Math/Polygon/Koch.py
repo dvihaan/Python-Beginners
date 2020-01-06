@@ -2,28 +2,32 @@ import math
 def equalVertex(x1=-10,y1=0,x2=10,y2=0):
     x3 = x1/2 + x2/2
     y3 = y1/2 + y2/2
-    #print("x3={}, y3={}".format(x3, y3))
     l = math.sqrt((x1-x2)**2 + (y1-y2)**2)
-    #print("l={}".format(l))
     m = (y2-y1)/(x2-x1)
-    #print("m1={}".format(m1))
+    
     if y2 != y1:
         sign = int((y2-y1)/abs(y2-y1))
     else:
-        sign = int((x2-x1)/abs(x2-x1))   
-    c = sign*m*l*math.sin(math.radians(60))/math.sqrt(m**2 + 1)
-    #print("c={}".format(c))
+        sign = int((x2-x1)/abs(x2-x1))
+    
+    mpos = m >= 0   
+    delypos = y2 >= y1
+    addpi = mpos ^ delypos
+    theta = 60
+    if addpi:
+        theta = theta + 180
+    c = sign*m*l*math.sin(math.radians(theta))/math.sqrt(m**2 + 1)
 
     if x2 == x1:
-        x4 = x3 + l*math.sin(math.radians(60))
+        x4 = x3 + sign*l*math.sin(math.radians(theta))
     else:
-        x4 = x3 + c*sign
+        x4 = x3 + sign*c
 
     if m == 0:
-        y4 = y3 - l*sign*math.sin(math.radians(60))
+        y4 = y3 - sign*l*math.sin(math.radians(theta))
     else:
         if x2 == x1:
-            y4 = y3
+            y4 = y3*sign
         else:
             y4 = y3 - c*sign/m
 
