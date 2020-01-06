@@ -34,7 +34,7 @@ def drawKoch():
     centre = (pygame.mouse.get_pos())
     xoff = sideLength/2
     yoff = sideLength*math.tan(math.radians(60))/6
-    points = Koch.equalVertex(x1 = centre[0]-xoff,y1 = centre[1]-yoff,x2 = centre[0]+xoff,y2 = centre[1]-yoff)
+    points = Koch.equalVertex(x1 = centre[0]-xoff,y1 = centre[1]+yoff,x2 = centre[0]+xoff,y2 = centre[1]+yoff)
 
     points = Koch.Snowflake(points,level)
     for i in range(len(points)):        
@@ -57,8 +57,8 @@ def run_show():
                             level -= 1
                     
                     if pygame.mouse.get_pressed() == (1,1,0):
-                        if sideLength > 5:
-                            sideLength = sideLength - 5                            
+                        if sideLength > 50:
+                            sideLength = sideLength - 50                           
                 if event.button == 3:
                     
                     if pygame.mouse.get_pressed() == (0,0,1):
@@ -67,7 +67,7 @@ def run_show():
                     
                     if pygame.mouse.get_pressed() == (0,1,1):
                         if sideLength < 1000:
-                            sideLength = sideLength + 5 
+                            sideLength = sideLength + 50 
                 
                 if event.button == 4:
                     angle = angle + 10

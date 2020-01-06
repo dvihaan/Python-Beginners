@@ -7,20 +7,25 @@ def equalVertex(x1=-10,y1=0,x2=10,y2=0):
     #print("l={}".format(l))
     m = (y2-y1)/(x2-x1)
     #print("m1={}".format(m1))
-    c = m*l*math.sin(math.radians(60))/math.sqrt(m**2 + 1)
-    #print("c={}".format(c))
-    if x2 == x1:
-        x4 = x3 - l*math.sin(math.radians(60))
+    if y2 != y1:
+        sign = int((y2-y1)/abs(y2-y1))
     else:
-        x4 = c+x3
+        sign = int((x2-x1)/abs(x2-x1))   
+    c = sign*m*l*math.sin(math.radians(60))/math.sqrt(m**2 + 1)
+    #print("c={}".format(c))
+
+    if x2 == x1:
+        x4 = x3 + l*math.sin(math.radians(60))
+    else:
+        x4 = x3 + c*sign
 
     if m == 0:
-        y4 = y3 + l*math.sin(math.radians(60))
+        y4 = y3 - l*sign*math.sin(math.radians(60))
     else:
         if x2 == x1:
             y4 = y3
         else:
-            y4 = y3 - c/m
+            y4 = y3 - c*sign/m
 
     points = [(x1,y1),(x4,y4),(x2,y2),(x1,y1)] 
 
