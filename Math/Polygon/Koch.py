@@ -15,7 +15,7 @@ def equalVertex(x1=-10,y1=0,x2=10,y2=0):
         x4 = c+x3
 
     if m == 0:
-        y4 = y3 - l*math.sin(math.radians(60))
+        y4 = y3 + l*math.sin(math.radians(60))
     else:
         if x2 == x1:
             y4 = y3
