@@ -8,6 +8,7 @@ size = width, height =1280, 1024
 backgroundColor = "Black"
 # Setting the foreground colour (feel free to edit the string to any colour you like)
 foregroundColor = "Green"
+lineWidth = 0
 sideLength = 500
 angle = 0
 level = 0
@@ -38,7 +39,7 @@ def applyRotation(point, centre):
     return (centre[0]+x*math.cos(math.radians(angle)) - y*math.sin(math.radians(angle)), centre[1]+x*math.sin(math.radians(angle)) + y*math.cos(math.radians(angle)))
 
 def drawKoch(centre=(0,0), drawLevel=0):
-    global sideLength, angle, level, backgroundColor, foregroundColor
+    global sideLength, angle, level, backgroundColor, foregroundColor, lineWidth
     if drawLevel == 0:
         drawLevel = level
     background.fill(pygame.Color(backgroundColor))
@@ -62,7 +63,7 @@ def drawKoch(centre=(0,0), drawLevel=0):
         centre = (pygame.mouse.get_pos())
     points = list(map(lambda p: applyTranslation(p,centre), points))
     points = list(map(lambda p: applyRotation(p,centre), points))
-    pygame.draw.lines(background, pygame.Color(foregroundColor), False, points)
+    pygame.draw.polygon(background, pygame.Color(foregroundColor), points, lineWidth)
     screen.blit(background, (0, 0))
     pygame.display.update()
 
