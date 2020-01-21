@@ -1,16 +1,15 @@
 import sys,pygame
 import time
 import math
-import Koch
+import Sierpinski
 
-size = width, height =1280, 1024
+size = width, height =800, 600
 # Setting the background colour (feel free to edit the string to any colour you like)
 backgroundColor = "Black"
 # Setting the foreground colour (feel free to edit the string to any colour you like)
 foregroundColor = "Green"
 lineWidth = 1
-
-sideLength = 500
+sideLength = 50
 angle = 0
 level = 0
 minLevel = 0
@@ -18,53 +17,34 @@ maxLevel = 7
 levelChange = 1
 minLength = 50
 lengthChange = 50
-vertices = {}
+
 pygame.init()
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
-pygame.display.set_caption('Snowflake')
+pygame.display.set_caption('Sierpinski Gasket')
 pygame.mouse.set_visible(True)
 maxLength = int(screen.get_size()[1]*0.9)
 background = pygame.Surface(screen.get_size())
 background = background.convert()
 background.fill(pygame.Color("white"))
 
-def applyTranslation(point, centre):
-    x = point[0]+centre[0]
-    y = point[1]+centre[1]
-    return (x, y)
+def drawPinski(points,currentLevel):
+    global level
+    gasket = Sierpinski.Sierpinski(points)
+    pygame.draw.polygon(background, pygame.Color(foregroundColor), gasket[0], lineWidth)
+    if currentLevel <= level:
+        for i in range(len(gasket)-1):
+            drawPinski(gasket[i+1],currentLevel+1)
 
-def applyRotation(point, centre):
-    x = point[0]-centre[0]
-    y = point[1]-centre[1]
-    return (centre[0]+x*math.cos(math.radians(angle)) - y*math.sin(math.radians(angle)), centre[1]+x*math.sin(math.radians(angle)) + y*math.cos(math.radians(angle)))
 
-def drawKoch(centre=(0,0), drawLevel=0):
-    global sideLength, angle, level, backgroundColor, foregroundColor, lineWidth
-    if drawLevel == 0:
-        drawLevel = level
+def drawGasket():
+    global foregroundColor, lineWidth, sideLength
     background.fill(pygame.Color(backgroundColor))
-    if str(sideLength) in vertices and int(vertices[str(sideLength)]["level"]) >= drawLevel:
-        points = vertices[str(sideLength)]["points"]
-        pointLevel = int(vertices[str(sideLength)]["level"])
-        if drawLevel < pointLevel:
-            jump = int(math.pow(4, pointLevel - drawLevel))
-            levelPoints = []
-            for i in range(0, len(points), jump):
-                levelPoints.append(points[i])
-            points = levelPoints
-    else:
-        xoff = sideLength/2
-        yoff = sideLength*math.tan(math.radians(60))/6
-        points = Koch.equalVertex(x1 = 0-xoff,y1 = 0+yoff,x2 = 0+xoff,y2 = 0+yoff)
-        points = Koch.Snowflake(points,drawLevel)
-        vertices[str(sideLength)] = {"level": str(drawLevel), "points": points}
-
-    if centre[0]==0 and centre[1]==0:
-        centre = (pygame.mouse.get_pos())
-    points = list(map(lambda p: applyTranslation(p,centre), points))
-    points = list(map(lambda p: applyRotation(p,centre), points))
+    midx = int(screen.get_size()[0]/2)
+    midy = int(screen.get_size()[1]/2)
+    points = [(midx-sideLength/2,midy+sideLength/2),(midx+sideLength/2,midy+sideLength/2),(midx,midy-sideLength/2),(midx-sideLength/2,midy+sideLength/2)]
     pygame.draw.polygon(background, pygame.Color(foregroundColor), points, lineWidth)
+    drawPinski(points,1)
     screen.blit(background, (0, 0))
     pygame.display.update()
 
@@ -94,14 +74,11 @@ def run_show():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        background.fill(pygame.Color(backgroundColor))
-
         # Running the main funtion
-        drawKoch()
-
+        drawGasket()
         # Setting the window's FPS
         # Edit the FPS by changing the input for clock.tick
         clock.tick(60)
 
-#drawKoch((int(screen.get_size()[0]/2), int(screen.get_size()[1]/2)), 7)
 run_show()
+

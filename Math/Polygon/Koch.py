@@ -1,4 +1,5 @@
 import math
+
 def equalVertex(x1=-10,y1=0,x2=10,y2=0):
     x3 = x1/2 + x2/2
     y3 = y1/2 + y2/2
