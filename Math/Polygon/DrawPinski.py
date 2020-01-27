@@ -28,6 +28,11 @@ background = pygame.Surface(screen.get_size())
 background = background.convert()
 background.fill(pygame.Color("white"))
 
+def applyRotation(point, centre):
+    x = point[0]-centre[0]
+    y = point[1]-centre[1]
+    return (centre[0]+x*math.cos(math.radians(angle)) - y*math.sin(math.radians(angle)), centre[1]+x*math.sin(math.radians(angle)) + y*math.cos(math.radians(angle)))
+
 def drawPinski(points,currentLevel):
     global level
     gasket = Sierpinski.Sierpinski(points)
@@ -40,9 +45,16 @@ def drawPinski(points,currentLevel):
 def drawGasket():
     global foregroundColor, lineWidth, sideLength
     background.fill(pygame.Color(backgroundColor))
-    midx = int(screen.get_size()[0]/2)
-    midy = int(screen.get_size()[1]/2)
-    points = [(midx-sideLength/2,midy+sideLength/2),(midx+sideLength/2,midy+sideLength/2),(midx,midy-sideLength/2),(midx-sideLength/2,midy+sideLength/2)]
+    centre = (pygame.mouse.get_pos())
+    midx = centre[0]
+    midy = centre[1]
+    points = [
+        (midx-sideLength/2,midy+sideLength*math.tan(math.radians(30))/2),
+        (midx+sideLength/2,midy+sideLength*math.tan(math.radians(30))/2),
+        (midx,midy-sideLength/(2*math.cos(math.radians(30)))),
+        (midx-sideLength/2,midy+sideLength*math.tan(math.radians(30))/2)
+    ]
+    points = list(map(lambda p: applyRotation(p,centre), points))
     pygame.draw.polygon(background, pygame.Color(foregroundColor), points, lineWidth)
     drawPinski(points,1)
     screen.blit(background, (0, 0))
