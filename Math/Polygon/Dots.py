@@ -24,12 +24,20 @@ background = pygame.Surface(screen.get_size())
 background = background.convert()
 background.fill(pygame.Color(backgroundColor))
 
-def dots(points):
+def addDots(points):
     lastPoint = points[len(points)-1]
     randomVertex = points[randint(0,2)]
     newpoint = midpoint(lastPoint, randomVertex)
     points.append(newpoint)
+    pygame.draw.circle(background,pygame.Color(foregroundColor),(int(newpoint[0]), int(newpoint[1])),1)
     return points
+
+def removeDots(points):
+    if len(points) > 3:
+        lastPoint = points.pop(-1)
+        pygame.draw.circle(background,pygame.Color(backgroundColor),(int(lastPoint[0]), int(lastPoint[1])),1)
+    return points
+
 
 def main():
     points = [(-2,0),(2,0),(0,2)]
@@ -39,21 +47,22 @@ def main():
         (midx-sideLength/2,midy+sideLength*math.tan(math.radians(30))/2),
         (midx+sideLength/2,midy+sideLength*math.tan(math.radians(30))/2),
         (midx,midy-sideLength/(2*math.cos(math.radians(30))))
-    ]    
-    for i in range(100000):
-        points = dots(points)
-
-    for p in points:
-        pygame.draw.circle(background,pygame.Color(foregroundColor),(int(p[0]), int(p[1])),1)
-    screen.blit(background, (0, 0))
-    pygame.display.update()
+    ]
 
     while True:
         for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 4:
+                    points = addDots(points)
+                if event.button == 5:
+                    points = removeDots(points)
             if event.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()        
+                sys.exit()  
+        screen.blit(background, (0, 0))
+        pygame.display.update()      
 
 if __name__ == '__main__':
     main()
+
 
