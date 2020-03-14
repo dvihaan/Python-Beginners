@@ -1,4 +1,5 @@
 import math
+from multiset import Multiset
 
 def allfactors(n):
     factors = []
@@ -35,17 +36,37 @@ def primefactors(n):
     sf = smallestfactor(n)
     factors.append(sf)
     n = int(n/sf)
-    while sf < n:
+    while sf <= n:
         sf = smallestfactor(n)
         n = int(n/sf)
         factors.append(sf)
     return factors
 
+def GCF(x,y):
+    pfx = Multiset(primefactors(x))
+    pfy = Multiset(primefactors(y))
+    gcf = 1
+    for p in pfx.intersection(pfy):
+        gcf = gcf*p
+    return gcf
+
+def LCM(x,y):
+    pfx = Multiset(primefactors(x))
+    pfy = Multiset(primefactors(y))
+    gcf = 1
+    union = pfx.union(pfy)
+    for p in union:
+        gcf = gcf*p
+    return gcf
+
 def main():
     num = 13082761331670030
+    n1 = 180
+    n2 = 252
     factors = primefactors(num)
-    print(factors)
-    #fancyfactors(num)
+    venn = LCM(n1,n2)
+    print(venn)
+    #fancyfactors(num)                                              
 
 if __name__ == '__main__':
     main()
