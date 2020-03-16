@@ -9,16 +9,6 @@ def allfactors(n):
             factors.extend(addedfactors)
     return factors
 
-
-'''
-def orderfactors(n):
-    factors = []
-    for i in range(1,n+1):
-        if n%i == 0:
-            factors.append(i)
-    return factors
-'''
-
 def fancyfactors(n):
     factors = allfactors(n)
     l = len(factors)
@@ -66,7 +56,6 @@ def main():
     factors = primefactors(num)
     venn = LCM(n1,n2)
     print(venn)
-    #fancyfactors(num)                                              
 
 if __name__ == '__main__':
     main()

@@ -1,4 +1,3 @@
-
 def factorialLoop(n):
     ans = 1
     for i in range(1,n+1):
@@ -14,24 +13,46 @@ def NcR(n,r):
     return int(factorialLoop(n)/(factorialLoop(r)*factorialLoop(n-r)))
 
 def binomial(n):
+    r3turn = ""
     for i in range(n+1):
-        print(NcR(n,i),end = '\t')
+        r3turn = r3turn+"{:8}".format(NcR(n,i))
+    return r3turn
+
+def Pascals(n):
+    for i in range(n+1):
+        fstr = '{:'+str(4*(n-i))+'}'
+        if i < n:
+            print((fstr+'{}').format('', binomial(i)))
+        else:
+            print(binomial(i))
+
 
 def allFactorials(n):
     for i in range(n+1):
-        print('{:>166}'.format(factorialRecursive(i)))
+        print('{:>165}'.format(factorialRecursive(i)))
 
 def main():
-    
-    num1 = 5
     '''
-    num2 = 2
+    numFL = 5
+    print(factorialLoop(numFL))
 
-    factorial = NcR(num1,num2)
-    print(factorial)
+    numFR = 5
+    print(factorialRecursive(numFR))  
+
+    numAF = 5
+    allFactorials(numAF)
+
+    numN = 5
+    numR = 2
+    print(NcR(numN,numR)) 
+
+    numB = 6
+    print(binomial(numB))
+
     '''
+    numP = 10
+    Pascals(numP)
 
-    binomial(num1)   
 
 if __name__ == '__main__':
     main()
