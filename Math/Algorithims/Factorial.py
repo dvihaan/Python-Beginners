@@ -13,18 +13,23 @@ def NcR(n,r):
     return int(factorialLoop(n)/(factorialLoop(r)*factorialLoop(n-r)))
 
 def binomial(n):
-    r3turn = ""
+    terms = []
     for i in range(n+1):
-        r3turn = r3turn+"{:8}".format(NcR(n,i))
-    return r3turn
+        terms.append(NcR(n,i))
+    return terms
 
-def Pascals(n):
+def Pascals(n,w = 4):
     for i in range(n+1):
-        fstr = '{:'+str(4*(n-i))+'}'
+        sw = '{:'+str(w*(n-i))+'}'
+        fw = '{:'+str(2*w)+'}'
+        terms = binomial(i)
+        bn = ""
+        for term in terms:
+            bn = bn+fw.format(term)
         if i < n:
-            print((fstr+'{}').format('', binomial(i)))
+            print((sw+'{}').format('', bn))
         else:
-            print(binomial(i))
+            print(bn)
 
 
 def allFactorials(n):
@@ -51,7 +56,8 @@ def main():
 
     '''
     numP = 10
-    Pascals(numP)
+    fillwidth = 3
+    Pascals(numP,fillwidth)
 
 
 if __name__ == '__main__':
