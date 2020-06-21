@@ -9,7 +9,7 @@ This function and code only prints the points you would need to plot the shape t
 def GetPoints(n, a, cx = 0, cy = 0, theta = 0):
     #the list of tuples that will contain the points
     points = []
-    #r = the distance from the centre to any vertex
+    # r = the distance from the centre to any vertex
     r = a*math.sin(math.radians(90-180/n))/math.sin(math.radians(360/n))
     #creating the tuples containing the points
     for i in range(n+1):
