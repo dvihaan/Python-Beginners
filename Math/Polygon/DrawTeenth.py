@@ -3,6 +3,9 @@ import time
 import Juneteenth
 
 size = width, height = 1280, 1024
+flagBlue = pygame.Color(2,0,102)
+flagRed = pygame.Color(202,4,5)
+grey = pygame.Color(112,128,144)
 pygame.init()
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
@@ -11,24 +14,44 @@ pygame.mouse.set_visible(True)
 
 background = pygame.Surface(screen.get_size())
 background = background.convert()
-background.fill(pygame.Color("white"))
+background.fill(grey)
 
-vertices = 5
-radius = 50
+inVertices = 5
+inRadius = 100
 
-def drawStar():
-    # Creating the global variables for the amount of sides, side length, the rotation angle, and the mouse button being pressed 
-    global vertices, radius
-    # Drawing the polygon
-    centre = (pygame.mouse.get_pos())
-    points = Juneteenth.star(radius,vertices, centre[0], centre[1])
-    pygame.draw.lines(background, pygame.Color("black"), False, points)
-    for p in range(len(points)-1):
-        pygame.draw.line(background, pygame.Color("black"), points[p], points[p+1])
+outVertices = 12
+outRadius = 200
+
+flagWidth = 1800
+flagHeight = 1200
+
+def drawRect(xLen = 1800,yLen = 600, centre = (0,0)):
+    cx = centre[0]
+    cy = centre[1]
+    
+    p1 = (cx-xLen/2, cy+yLen/2)
+    p2 = (cx+xLen/2, cy+yLen/2)
+    p3 = (cx+xLen/2, cy-yLen/2)
+    p4 = (cx-xLen/2, cy-yLen/2)
+    
+    points = [p1, p2, p3, p4, p1]
+
+    pygame.draw.rect(background, pygame.Color("white"), points, 20)
     screen.blit(background, (0, 0))
 
+def drawStar(v, r, s, centre):
+    # Drawing the polygon
+    points = Juneteenth.star(r, v, centre[0], centre[1])
+    pygame.draw.polygon(background, pygame.Color("white"), points)
+    screen.blit(background, (0, 0))
+
+def drawFlag():
+    global inVertices, inRadius, outVertices, outRadius, flagHeight, flagWidth
+
+
+
 def run_show():
-    global vertices, radius
+    global inVertices, inRadius
     while True:        
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -36,18 +59,18 @@ def run_show():
                 print("Pressed = {}".format(pygame.mouse.get_pressed()))
                 if event.button == 1:
                     if pygame.mouse.get_pressed() == (1,0,0):
-                        if vertices > 5:
-                            vertices = vertices - 1
+                        if inVertices > 5:
+                            inVertices= inVertices- 1
                     if pygame.mouse.get_pressed() == (1,1,0):
-                        if radius > 50:
-                            radius = radius - 5                            
+                        if inRadius > 50:
+                            inRadius = inRadius - 5                            
                 if event.button == 3:
                     if pygame.mouse.get_pressed() == (0,0,1):
-                        if vertices < 12:
-                            vertices = vertices + 1  
+                        if inVertices< 12:
+                            inVertices= inVertices+ 1  
                     if pygame.mouse.get_pressed() == (0,1,1):
-                        if radius < 500:
-                            radius = radius + 5 
+                        if inRadius < 500:
+                            inRadius = inRadius + 5 
                 '''
                 if event.button == 4:
                     angle = angle + 50
@@ -57,16 +80,16 @@ def run_show():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        # Setting the background colour (feel free to edit the string to any colour you like)
-        background.fill(pygame.Color("white"))
+        # Setting the background colour
+        background.fill(grey)
         
         # Running the main funtion
-        drawStar()
+        drawFlag()
 
         # Setting the window's FPS
         pygame.display.update()
         # Edit the FPS by changing the input for clock.tick
-        clock.tick(250)
+        clock.tick(300)
 
 # Finally running the program
 run_show()

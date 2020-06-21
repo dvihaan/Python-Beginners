@@ -1,16 +1,17 @@
 import math
 
 def star (r,p,cx = 0,cy = 0):
+    angle = 90
     oPoints = []
     inPoints = []
     r2 = r/2
 
     for i in range(p+1):
-        Vix = r*math.cos(math.radians(i*360/p)) + cx
-        Viy = r*math.sin(math.radians(i*360/p)) + cy
+        Vix = r*math.cos(math.radians(i*360/p-angle)) + cx
+        Viy = r*math.sin(math.radians(i*360/p-angle)) + cy
         oPoints.append((Vix,Viy))
 
-    theta = 360/(2*p)
+    theta = 360/(2*p)-angle
 
     for i in range(p+1):
         Vix = r2*math.cos(math.radians(i*360/p+theta)) + cx
