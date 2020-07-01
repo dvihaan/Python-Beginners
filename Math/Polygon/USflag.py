@@ -63,11 +63,15 @@ def drawUSflag():
     drawRect(blueWidth, blueHeight, (TLx, TLy), 0, flagBlue)
 
 
-    for r in range (10):
-        starCY = centre[1]-(r+1)*starDistY
+    for r in range (1,10):
+        starCY = centre[1]-r*starDistY+starDistY/2
         if r%2 != 0:
-            for o in range(7):
-                starCX = centre[0]-(starDistX + o*2*starDistX)
+            for o in range(1,7):
+                starCX = centre[0]-o*2*starDistX - 2*starDistX
+                drawStar(starVertices,starRadius,(starCX, starCY),0,pygame.Color("white"),starPent)
+        if r%2 == 0:
+            for e in range(1,6):
+                starCX = centre[0]-e*2*starDistX - 3*starDistX
                 drawStar(starVertices,starRadius,(starCX, starCY),0,pygame.Color("white"),starPent)
 
 
