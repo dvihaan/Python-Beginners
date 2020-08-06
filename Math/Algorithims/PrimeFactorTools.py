@@ -24,9 +24,9 @@ def allFactors(n):
         if n%i == 0:
             factorList.add(int(n/i))
             factorList.add(i)
-    return list(factorList)
+    return sorted(list(factorList))
 
 def factorSum(f):
     return sum(allFactors(f)[:-1])
 
-print(factorSum(6))
+#print(factorSum(8589869056))
