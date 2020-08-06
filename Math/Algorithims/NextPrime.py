@@ -1,13 +1,16 @@
 import math
 
 def isPrime(x):
-    isit = False
-    for p in range(2,int(math.sqrt(x))+1):
-        print()
-        if x%p == 0:
-            return True
+    if x == 1:
+        return False
+    isit = True
+    for p in range(2,math.ceil(math.sqrt(x))+1):
+        print(p)
+        if x%p == 0 and x != p:
+            isit = False
+            break
 
     return isit
 
 
-print(isPrime(3))
+print(isPrime(1))
